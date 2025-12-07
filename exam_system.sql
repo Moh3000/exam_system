@@ -84,3 +84,10 @@ CREATE TABLE StudentAnswers (
 
   UNIQUE (student_exam_id, question_id)
 );
+INSERT INTO Users (Username, email, password_hash, role)
+VALUES ('Student1', 'student1@example.com', MD5('123456'), 'student');
+
+INSERT INTO Users (Username, email, password_hash, role)
+VALUES ('Teacher1', 'teacher1@example.com', MD5('123456'), 'teacher');
+
+

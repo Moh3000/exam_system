@@ -20,7 +20,7 @@
         <div class="row justify-content-center">
 
             <div class="col-md-4 mb-3">
-                <a href="create_exam.php" class="text-decoration-none">
+                <a href="Results.php" class="text-decoration-none">
                     <div class="card shadow text-center p-4">
                         <h4><i class="bi bi-check-circle"></i></i></h4>
                         <p>See You Results</p>
@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-md-4 mb-3">
-                <a href="add_question.php" class="text-decoration-none">
+                <a href="Exams.php" class="text-decoration-none">
                     <div class="card shadow text-center p-4">
                         <h4><i class="bi bi-list-task"></i></i></h4>
                         <p class="text-muted">Take New Exam</p>
