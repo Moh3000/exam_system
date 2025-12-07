@@ -18,16 +18,17 @@ CREATE TABLE QuestionBank (
   question_id BIGINT AUTO_INCREMENT PRIMARY KEY,
   teacher_id BIGINT NOT NULL,
   question_text TEXT NOT NULL,
-  option_a TEXT,
-  option_b TEXT,
-  option_c TEXT,
-  option_d TEXT,
-  correct_option ENUM('A','B','C','D') NOT NULL,
-
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (teacher_id) REFERENCES Users(UserID) ON DELETE CASCADE
-) ;
-
+);
+CREATE TABLE QuestionOptions (
+  option_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  question_id BIGINT NOT NULL,
+  option_text TEXT NOT NULL,
+  option_order INT DEFAULT 0,
+  is_correct TINYINT(1) DEFAULT 0,
+  FOREIGN KEY (question_id) REFERENCES QuestionBank(question_id) ON DELETE CASCADE
+);
 
 CREATE TABLE Exams (
   ExamID BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -73,10 +74,13 @@ CREATE TABLE StudentAnswers (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   student_exam_id BIGINT NOT NULL,
   question_id BIGINT NOT NULL,
-  student_answer ENUM('A','B','C','D') NULL,
-  is_correct TINYINT(1) DEFAULT NULL, 
+  option_id BIGINT NULL,  
+  is_correct TINYINT(1) DEFAULT NULL,
   answered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
   FOREIGN KEY (student_exam_id) REFERENCES StudentExams(id) ON DELETE CASCADE,
   FOREIGN KEY (question_id) REFERENCES QuestionBank(question_id) ON DELETE CASCADE,
+  FOREIGN KEY (option_id) REFERENCES QuestionOptions(option_id) ON DELETE SET NULL,
+
   UNIQUE (student_exam_id, question_id)
 );
