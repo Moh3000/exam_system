@@ -1,0 +1,13 @@
+    body {
+            background: #f2f2f2;
+            padding: 40px;
+        }
+
+        .box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #ccc;
+            max-width: 800px;
+            margin: auto;
+        }

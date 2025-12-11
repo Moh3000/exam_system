@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -33,6 +33,15 @@
                     <div class="card shadow text-center p-4">
                         <h4><i class="bi bi-plus-circle"></i></h4>
                         <p class="text-muted">Add New Question</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <a href="show_exams.php" class="text-decoration-none">
+                    <div class="card shadow text-center p-4">
+                        <h4><i class="bi bi-plus-circle"></i></h4>
+                        <p class="text-muted">Show your exams</p>
                     </div>
                 </a>
             </div>

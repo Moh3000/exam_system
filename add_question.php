@@ -53,21 +53,8 @@ if (isset($_POST['add_question'])) {
     <meta charset="UTF-8">
     <title>Add Question</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f2f2f2;
-            padding: 40px;
-        }
+    <link href="style_add_question.css" rel="stylesheet">
 
-        .box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px #ccc;
-            max-width: 800px;
-            margin: auto;
-        }
-    </style>
 </head>
 
 <body>

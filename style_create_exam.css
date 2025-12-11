@@ -1,0 +1,33 @@
+ body {
+            background: #f2f2f2;
+            padding: 30px;
+        }
+
+        .box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        .question-row {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 5px;
+        }
+
+        .option-item {
+            padding-left: 20px;
+            cursor: grab;
+            margin-bottom: 3px;
+        }
+
+        .option-correct {
+            color: green;
+            font-weight: bold;
+        }
+
+        .drag-handle {
+            cursor: grab;
+            margin-right: 5px;
+        }
