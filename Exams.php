@@ -5,7 +5,7 @@ if (mysqli_connect_errno()) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$student_id = $_SESSION['user_id'] ?? 1;
+
 
 $exams = mysqli_query($link, "
     SELECT se.id AS student_exam_id, e.*,
@@ -14,7 +14,7 @@ $exams = mysqli_query($link, "
     FROM StudentExams se
     JOIN Exams e ON se.exam_id = e.ExamID
     JOIN ExamQuestions eq ON e.ExamID = eq.ExamID
-    WHERE se.student_id=$student_id
+    WHERE se.student_id=1
     GROUP BY se.id
     ORDER BY e.created_at DESC
 ");
@@ -27,7 +27,7 @@ $exams = mysqli_query($link, "
     <meta charset="UTF-8">
     <title>Available Exams</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style_Exams.css" rel="stylesheet">
+    <link href="css/style_Exams.css" rel="stylesheet">
 </head>
 
 <body>
