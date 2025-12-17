@@ -1,20 +1,27 @@
-       body {
-            padding: 30px;
-            background: #f2f2f2;
-        }
+body {
+  background: #f2f2f2;
+  padding: 30px;
+}
 
-        .box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
+.box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
 
-        .exam-row {
-            margin-bottom: 10px;
-        }
+.box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
 
-        .exam-info {
-            font-size: 0.95rem;
-            color: #555;
-        }
+.exam-row {
+  margin-bottom: 10px;
+}
+
+.exam-info {
+  font-size: 0.95rem;
+  color: #555;
+}

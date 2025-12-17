@@ -5,12 +5,11 @@ if (mysqli_connect_errno()) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+$alert_msg = ''; 
 if (isset($_POST['change_state'])) {
     $exam_id = intval($_POST['exam_id']);
     $new_state = $_POST['new_state'] === 'published' ? 'published' : 'draft';
     $start_time_input = $_POST['start_time'] ?? null;
-
-    mysqli_query($link, "UPDATE Exams SET status='$new_state' WHERE ExamID=$exam_id");
 
     if ($new_state === 'published') {
         $start_time = $start_time_input ? date('Y-m-d H:i:s', strtotime($start_time_input)) : date('Y-m-d H:i:s');
@@ -21,15 +20,41 @@ if (isset($_POST['change_state'])) {
         $submit_time = date('Y-m-d H:i:s', strtotime("+$time_limit minutes", strtotime($start_time)));
 
         $students = mysqli_query($link, "SELECT UserID FROM Users WHERE role='student'");
+        $conflict_found = false;
+
+        
         while ($student = mysqli_fetch_assoc($students)) {
             $sid = $student['UserID'];
-            mysqli_query($link, "INSERT INTO StudentExams (student_id, exam_id, start_time, submit_time) 
-                                 VALUES ($sid, $exam_id, '$start_time', '$submit_time')
-                                 ON DUPLICATE KEY UPDATE start_time='$start_time', submit_time='$submit_time'");
+
+            $conflict_check = mysqli_query($link, "
+                SELECT * FROM StudentExams 
+                WHERE student_id = $sid 
+                  AND ((start_time <= '$start_time' AND submit_time > '$start_time')
+                       OR (start_time < '$submit_time' AND submit_time >= '$submit_time')
+                       OR (start_time >= '$start_time' AND submit_time <= '$submit_time'))
+            ");
+
+            if (mysqli_num_rows($conflict_check) > 0) {
+                $conflict_found = true;
+                break; 
+            }
         }
-    } else {
-        mysqli_query($link, "DELETE FROM StudentExams WHERE exam_id=$exam_id");
+
+        if ($conflict_found) {
+            $alert_msg = "Cannot publish exam because some students have overlapping exams.";
+            $new_state = 'draft'; 
+        } else {
+            $students_to_insert = mysqli_query($link, "SELECT UserID FROM Users WHERE role='student'");
+            while ($student = mysqli_fetch_assoc($students_to_insert)) {
+                $sid = $student['UserID'];
+                mysqli_query($link, "INSERT INTO StudentExams (student_id, exam_id, start_time, submit_time) 
+                                     VALUES ($sid, $exam_id, '$start_time', '$submit_time')
+                                     ON DUPLICATE KEY UPDATE start_time='$start_time', submit_time='$submit_time'");
+            }
+        }
     }
+
+    mysqli_query($link, "UPDATE Exams SET status='$new_state' WHERE ExamID=$exam_id");
 }
 
 $exams = mysqli_query($link, "SELECT * FROM Exams ORDER BY created_at DESC");
@@ -45,6 +70,12 @@ $exams = mysqli_query($link, "SELECT * FROM Exams ORDER BY created_at DESC");
 </head>
 
 <body>
+    <?php if ($alert_msg): ?>
+        <script>
+            alert("<?= $alert_msg ?>");
+        </script>
+    <?php endif; ?>
+
     <div class="container">
         <div class="box">
             <h2 class="text-primary mb-4">Exams</h2>
@@ -97,15 +128,9 @@ $exams = mysqli_query($link, "SELECT * FROM Exams ORDER BY created_at DESC");
                                     while ($row = mysqli_fetch_assoc($res_q)) {
                                         $q_text = $row['question_text'];
                                         if (!isset($questions[$q_text])) {
-                                            $questions[$q_text] = [
-                                                'points' => $row['points'],
-                                                'options' => []
-                                            ];
+                                            $questions[$q_text] = ['points' => $row['points'], 'options' => []];
                                         }
-                                        $questions[$q_text]['options'][] = [
-                                            'text' => $row['option_text'],
-                                            'is_correct' => $row['is_correct']
-                                        ];
+                                        $questions[$q_text]['options'][] = ['text' => $row['option_text'], 'is_correct' => $row['is_correct']];
                                     }
                                     ?>
 
@@ -114,11 +139,7 @@ $exams = mysqli_query($link, "SELECT * FROM Exams ORDER BY created_at DESC");
                                             <b><?= htmlspecialchars($q_text) ?></b> (Points: <?= $q['points'] ?>)
                                             <ul>
                                                 <?php foreach ($q['options'] as $opt): ?>
-                                                    <li><?= htmlspecialchars($opt['text']) ?>
-                                                        <?php if ($opt['is_correct']): ?>
-                                                            <span class="option-correct">(correct)</span>
-                                                        <?php endif; ?>
-                                                    </li>
+                                                    <li><?= htmlspecialchars($opt['text']) ?> <?php if ($opt['is_correct']): ?><span class="option-correct">(correct)</span><?php endif; ?></li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         </div>

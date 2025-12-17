@@ -1,0 +1,27 @@
+body {
+  background-color: #f8f9fa;
+  padding: 50px 0;
+}
+
+.card-results {
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.table thead {
+  background: #f1f3f5;
+}
+
+.score-box {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.pass {
+  color: #198754;
+}
+
+.fail {
+  color: #dc3545;
+}
