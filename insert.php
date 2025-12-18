@@ -35,7 +35,7 @@ echo "</table>";
 
 
 if (isset($_POST['btn'])) {
-    $insert="insert into inser (id, name) values (".$_POST['id'].",'".$_POST['name']."')";  
+    $insert = "insert into inser (id, name) values (" . $_POST['id'] . ",'" . $_POST['name'] . "')";
 
     // $insert="update inser set name='".$_POST['name']."' where id=".$_POST['id'].""; 
     //$insert = "delete from inser  where id=" . $_POST['id'] . "";

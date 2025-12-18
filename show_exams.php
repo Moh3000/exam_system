@@ -5,7 +5,7 @@ if (mysqli_connect_errno()) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$alert_msg = ''; 
+$alert_msg = '';
 if (isset($_POST['change_state'])) {
     $exam_id = intval($_POST['exam_id']);
     $new_state = $_POST['new_state'] === 'published' ? 'published' : 'draft';
@@ -22,7 +22,7 @@ if (isset($_POST['change_state'])) {
         $students = mysqli_query($link, "SELECT UserID FROM Users WHERE role='student'");
         $conflict_found = false;
 
-        
+
         while ($student = mysqli_fetch_assoc($students)) {
             $sid = $student['UserID'];
 
@@ -36,13 +36,13 @@ if (isset($_POST['change_state'])) {
 
             if (mysqli_num_rows($conflict_check) > 0) {
                 $conflict_found = true;
-                break; 
+                break;
             }
         }
 
         if ($conflict_found) {
             $alert_msg = "Cannot publish exam because some students have overlapping exams.";
-            $new_state = 'draft'; 
+            $new_state = 'draft';
         } else {
             $students_to_insert = mysqli_query($link, "SELECT UserID FROM Users WHERE role='student'");
             while ($student = mysqli_fetch_assoc($students_to_insert)) {

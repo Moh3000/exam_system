@@ -65,14 +65,18 @@ $results = mysqli_stmt_get_result($stmt);
                             $earned = (float)$row['earned_score'];
                             $total  = (float)$row['total_max_points'];
 
-                    
+
                             $percentage = ($total > 0) ? ($earned / $total) * 100 : 0;
                             $status = ($percentage >= 50) ? 'Passed' : 'Failed';
                             $class = ($percentage >= 50) ? 'pass' : 'fail';
                             $bg_class = ($percentage >= 50) ? 'bg-success' : 'bg-danger';
                         ?>
                             <tr>
-                                <td><strong><?= htmlspecialchars($row['exam_name']) ?></strong></td>
+                                <td>
+                                    <a href="exam_review.php?attempt_id=<?= $row['attempt_id'] ?>" class="text-decoration-none fw-bold">
+                                        <?= htmlspecialchars($row['exam_name']) ?>
+                                    </a>
+                                </td>
                                 <td><?= date('M d, Y - h:i A', strtotime($row['submit_time'])) ?></td>
                                 <td class="score-box <?= $class ?>">
                                     <?= number_format($earned, 2) ?> / <?= number_format($total, 2) ?>

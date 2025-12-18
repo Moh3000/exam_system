@@ -200,7 +200,7 @@ $remaining_seconds = $end - time();
         </div>
     </div>
 
-    <script >
+    <script>
         let remaining = <?= $remaining_seconds ?>;
         const timerEl = document.getElementById('timer');
         const examForm = document.getElementById('examForm');
