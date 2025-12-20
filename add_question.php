@@ -27,19 +27,27 @@ if (isset($_POST['add_question'])) {
         $error_message = "Please select at least one correct option";
     } else {
         $question_safe = mysqli_real_escape_string($link, $question);
-        $insert_question = "INSERT INTO QuestionBank (teacher_id, question_text) VALUES (2, '$question_safe')";
-        if (mysqli_query($link, $insert_question)) {
-            $question_id = mysqli_insert_id($link);
-            foreach ($options as $i => $opt) {
-                $opt_safe = mysqli_real_escape_string($link, $opt);
-                $is_correct = in_array($i, $correct) ? 1 : 0;
-                $insert_option = "INSERT INTO QuestionOptions (question_id, option_text, option_order, is_correct)
-                                  VALUES ($question_id, '$opt_safe', $i+1, $is_correct)";
-                mysqli_query($link, $insert_option);
-            }
-            $show_success = true;
+        
+        $check_query = "SELECT id FROM QuestionBank WHERE question_text = '$question_safe'";
+        $check_result = mysqli_query($link, $check_query);
+        
+        if (mysqli_num_rows($check_result) > 0) {
+            $error_message = "This question already exists!";
         } else {
-            $error_message = "Error saving question: " . mysqli_error($link);
+            $insert_question = "INSERT INTO QuestionBank (teacher_id, question_text) VALUES (2, '$question_safe')";
+            if (mysqli_query($link, $insert_question)) {
+                $question_id = mysqli_insert_id($link);
+                foreach ($options as $i => $opt) {
+                    $opt_safe = mysqli_real_escape_string($link, $opt);
+                    $is_correct = in_array($i, $correct) ? 1 : 0;
+                    $insert_option = "INSERT INTO QuestionOptions (question_id, option_text, option_order, is_correct)
+                                      VALUES ($question_id, '$opt_safe', $i+1, $is_correct)";
+                    mysqli_query($link, $insert_option);
+                }
+                $show_success = true;
+            } else {
+                $error_message = "Error saving question: " . mysqli_error($link);
+            }
         }
     }
 }

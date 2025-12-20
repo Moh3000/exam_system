@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 
 
 $link = mysqli_connect("localhost", "root", "moh4242000", "exam_system");

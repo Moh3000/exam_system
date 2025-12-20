@@ -64,7 +64,7 @@ $sql = "SELECT q.question_id, q.question_text,
                o.option_id, o.option_text, o.is_correct
         FROM QuestionBank q
         LEFT JOIN QuestionOptions o ON q.question_id = o.question_id
-        ORDER BY q.question_id, o.option_order";
+        ORDER BY q.question_id DESC, o.option_order " ;
 
 $res = mysqli_query($link, $sql);
 
@@ -136,6 +136,8 @@ while ($row = mysqli_fetch_assoc($res)) {
                         <label class="form-check-label" for="random_order">Randomize Question Order</label>
                     </div>
 
+                    <button type="submit" name="create_exam" class="btn btn-success w-100 mt-4">Save Exam</button>
+                    <a href="teacher.php" class="btn btn-secondary w-100 mt-2">Cancel and Return</a>
                     <hr>
                     <h4 class="mt-4 mb-3">Select Questions</h4>
 
@@ -172,8 +174,6 @@ while ($row = mysqli_fetch_assoc($res)) {
                         <?php endforeach; ?>
                     </div>
 
-                    <button type="submit" name="create_exam" class="btn btn-success w-100 mt-4">Save Exam</button>
-                    <a href="teacher.php" class="btn btn-secondary w-100 mt-2">Cancel and Return</a>
 
                 </form>
             <?php endif; ?>
